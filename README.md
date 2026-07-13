@@ -1,6 +1,6 @@
 # 🎟️ TicketMaster – Full-Stack Ticket Booking System
 
-A production-quality, real-time ticket booking system built as a B.Tech final project using the **MERN stack** (MongoDB, Express.js, React, Node.js). The system simulates a complete, professional-grade booking ecosystem with concurrent seat management, real-time synchronization, role-based access control, automated email ticketing, and waitlist management.
+A real-time ticket booking system project using the **MERN stack** (MongoDB, Express.js, React, Node.js). The system simulates a complete, professional-grade booking ecosystem with concurrent seat management, real-time synchronization, role-based access control, automated email ticketing, and waitlist management.
 
 ---
 
@@ -168,17 +168,17 @@ Authentication is implemented using **JWT (Access + Refresh tokens)**. A special
 
 ![Venue Management page showing existing venue cards with seat categories](admin_venue_management.png)
 
-*The Venue Management page displays all registered venues as cards, each showing the venue name, location, total capacity (rows × cols), and the seat category assignments (which rows are Premium, Standard, or Economy). Venues can be edited from this view.*
+*The Venue Management page displays all registered venues as cards, each showing the venue name, location, total capacity (rows x cols), and the seat category assignments (which rows are Premium, Standard, or Economy). Venues can be edited from this view.*
 
 ![Create New Venue form with grid dimensions and seat category row assignments](venue_addView.png)
 
-*The Add Venue form lets admins define a venue name, address, grid dimensions (Total Rows × Seats per Row), and map row letters to categories (e.g., A,B = Premium · C,D,E,F = Standard · G,H,I,J = Economy). The total capacity is automatically calculated.*
+*The Add Venue form lets admins define a venue name, address, grid dimensions (Total Rows x Seats per Row), and map row letters to categories (e.g., A,B = Premium, C,D,E,F = Standard, G,H,I,J = Economy). The total capacity is automatically calculated.*
 
 - Create venues with:
   - Name and full address (street, city, state, country, pincode)
-  - Grid dimensions (`totalRows` × `totalCols`)
+  - Grid dimensions (`totalRows` x `totalCols`)
   - `totalCapacity` is auto-calculated on save.
-  - Seat categories (Premium / Standard / Economy) with assigned **row labels** (e.g., rows A–C = Premium, D–G = Standard, H–L = Economy).
+  - Seat categories (Premium / Standard / Economy) with assigned **row labels** (e.g., rows A-C = Premium, D-G = Standard, H-L = Economy).
   - Optional amenities list.
 
 ---
@@ -197,199 +197,34 @@ Authentication is implemented using **JWT (Access + Refresh tokens)**. A special
 ## 🛠️ Technology Stack
 
 ### Backend
-| Package | Version | Purpose |
-|---------|---------|---------|
-| `express` | v5 | HTTP API server |
-| `mongoose` | v8 | MongoDB ODM |
-| `socket.io` | v4 | Real-time WebSocket events |
-| `jsonwebtoken` | v9 | JWT auth (access + refresh tokens) |
-| `bcryptjs` | v3 | Password hashing |
-| `nodemailer` | v9 | Transactional email |
-| `qrcode` | v1.5 | QR code generation |
-| `node-cron` | v4 | Scheduled jobs (hold release, waitlist expiry) |
-| `express-validator` | v7 | Input validation |
-| `helmet` | v8 | HTTP security headers |
-| `morgan` | v1 | HTTP request logging |
-| `compression` | v1 | Response compression |
-| `uuid` | v14 | Booking reference generation |
-| `nodemon` | v3 | Dev auto-restart |
+| Package | Purpose |
+|---------|---------|
+| `express` | HTTP API server |
+| `mongoose` | MongoDB ODM |
+| `socket.io` | Real-time WebSocket events |
+| `jsonwebtoken` | JWT auth (access + refresh tokens) |
+| `bcryptjs` | Password hashing |
+| `nodemailer` | Transactional email |
+| `qrcode` | QR code generation |
+| `node-cron` | Scheduled jobs (hold release, waitlist expiry) |
+| `express-validator` | Input validation |
+| `helmet` | HTTP security headers |
+| `morgan` | HTTP request logging |
+| `compression` | Response compression |
+| `uuid` | Booking reference generation |
+| `nodemon` | Dev auto-restart |
 
 ### Frontend
-| Package | Version | Purpose |
-|---------|---------|---------|
-| `react` | v19 | UI framework |
-| `react-router-dom` | v7 | Client-side routing |
-| `axios` | v1 | HTTP API client |
-| `socket.io-client` | v4 | Real-time socket connection |
-| `react-hook-form` | v7 | Form state & validation |
-| `react-hot-toast` | v2 | Toast notifications |
-| `react-icons` | v5 | Icon library |
-| `vite` | v5 | Build tool & dev server |
-
----
-
-## 📂 Project Structure
-
-```
-Ticket_Booking_System/
-│
-├── backend/
-│   ├── src/
-│   │   ├── config/           # MongoDB connection, Socket.io setup
-│   │   ├── controllers/      # Route handlers (auth, booking, event, seat, venue, waitlist, dashboard)
-│   │   ├── jobs/             # Cron jobs
-│   │   │   ├── seatHoldRelease.job.js    # Runs every 1 min – releases expired holds
-│   │   │   └── waitlistExpiry.job.js     # Runs every 2 min – expires stale waitlist offers
-│   │   ├── middlewares/      # JWT auth guard, role guard, error handler, validators
-│   │   ├── models/           # Mongoose schemas
-│   │   │   ├── User.js       # name, email, password, role (admin/organizer/customer)
-│   │   │   ├── Venue.js      # Grid layout, categories, capacity
-│   │   │   ├── Event.js      # Title, type, date, time, pricing per category, status
-│   │   │   ├── Seat.js       # seatNumber, row, col, category, status, heldBy, holdExpiresAt
-│   │   │   ├── Booking.js    # bookingRef, seats snapshot, amounts, QR code, status
-│   │   │   └── Waitlist.js   # user, event, category, status, offerToken, offerExpiresAt
-│   │   ├── routes/           # Express routers (auth, bookings, events, seats, venues, waitlist, dashboard)
-│   │   ├── services/         # Core business logic (decoupled from controllers)
-│   │   │   ├── booking.service.js
-│   │   │   ├── seat.service.js
-│   │   │   └── waitlist.service.js
-│   │   └── utils/
-│   │       ├── apiResponse.js   # Standardised success/error response helpers
-│   │       ├── emailUtils.js    # Nodemailer email templates (booking, waitlist, cancellation)
-│   │       ├── qrUtils.js       # QR code generation (PNG + SVG)
-│   │       └── tokenUtils.js    # JWT sign/verify helpers
-│   ├── server.js             # App entry point, middleware registration, cron start
-│   ├── .env.example          # Environment variable template
-│   └── package.json
-│
-└── frontend/
-    ├── src/
-    │   ├── api/
-    │   │   ├── axios.js          # Axios instance with JWT interceptor & refresh token logic
-    │   │   └── services.js       # API service functions (authAPI, eventsAPI, bookingsAPI, etc.)
-    │   ├── components/
-    │   │   ├── EventCard/        # Event listing card component
-    │   │   ├── Navbar/           # Responsive top navigation bar
-    │   │   ├── ProtectedRoute/   # Role-aware route guard component
-    │   │   └── SeatMap/          # Interactive visual seat map with real-time sync
-    │   ├── context/
-    │   │   ├── AuthContext.jsx   # Global auth state (user, login, logout, refresh)
-    │   │   ├── SocketContext.jsx # Socket.io connection management
-    │   │   └── ToastContext.jsx  # Global toast notification system
-    │   ├── pages/
-    │   │   ├── Auth/             # Login & Register pages
-    │   │   ├── Events/           # Event browsing & search (homepage)
-    │   │   ├── EventDetail/      # Event detail + seat map + hold flow
-    │   │   ├── Checkout/         # Order summary + booking confirmation
-    │   │   ├── Bookings/         # Booking history list + booking detail page
-    │   │   ├── Dashboard/        # Organizer dashboard + Admin dashboard
-    │   │   ├── Organizer/        # Create / Edit event form
-    │   │   ├── Admin/            # Venue management UI
-    │   │   └── Waitlist/         # Waitlist history + claim page
-    │   ├── App.jsx               # Root router, layout wrapper
-    │   ├── main.jsx              # React DOM entry point
-    │   └── index.css             # Global design system (CSS variables, tokens, utilities)
-    ├── index.html
-    └── package.json
-```
-
----
-
-## ⚙️ Setup and Installation
-
-### Prerequisites
-- **Node.js** v18 or higher
-- **MongoDB** (local instance or MongoDB Atlas)
-- A **Gmail account** with an App Password for email (or any SMTP provider)
-
----
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/Dgpatil98600/Ticket_Booking_System.git
-cd Ticket_Booking_System
-```
-
----
-
-### 2. Backend Setup
-
-```bash
-cd backend
-npm install
-```
-
-Create a `.env` file in the `backend/` directory (copy from `.env.example`):
-
-```env
-NODE_ENV=development
-PORT=5000
-
-MONGODB_URI=mongodb://localhost:27017/ticketmaster
-
-JWT_SECRET=your_strong_jwt_secret_here
-JWT_EXPIRES_IN=7d
-JWT_REFRESH_SECRET=your_strong_refresh_secret_here
-JWT_REFRESH_EXPIRES_IN=30d
-
-# Required to register an Admin account
-ADMIN_SECRET=your_admin_registration_secret
-
-# Email (Gmail SMTP)
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-EMAIL_USER=your_gmail@gmail.com
-EMAIL_PASS=your_gmail_app_password
-EMAIL_FROM=TicketMaster <your_gmail@gmail.com>
-
-CLIENT_URL=http://localhost:5173
-SERVER_URL=http://localhost:5000
-
-# Seat hold duration in minutes (default: 5)
-SEAT_HOLD_TTL_MINUTES=5
-
-# Waitlist offer link validity in minutes (default: 15)
-WAITLIST_OFFER_TTL_MINUTES=15
-```
-
-> **Gmail App Password**: Generate one at [https://myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords). Do NOT use your actual Gmail password.
-
-Start the backend:
-
-```bash
-# Development (with auto-restart via nodemon)
-npm run dev
-
-# Production
-npm start
-```
-
-The backend will start on `http://localhost:5000`.
-
----
-
-### 3. Frontend Setup
-
-```bash
-cd frontend
-npm install
-```
-
-Create a `.env` file in the `frontend/` directory:
-
-```env
-VITE_API_URL=http://localhost:5000/api
-VITE_SOCKET_URL=http://localhost:5000
-```
-
-Start the frontend:
-
-```bash
-npm run dev
-```
-
-The frontend will start on `http://localhost:5173`.
+| Package | Purpose |
+|---------|---------|
+| `react` | UI framework |
+| `react-router-dom` | Client-side routing |
+| `axios` | HTTP API client |
+| `socket.io-client` | Real-time socket connection |
+| `react-hook-form` | Form state & validation |
+| `react-hot-toast` | Toast notifications |
+| `react-icons` | Icon library |
+| `vite` | Build tool & dev server |
 
 ---
 
@@ -420,29 +255,3 @@ The frontend will start on `http://localhost:5173`.
 | POST | `/api/waitlist/claim/:token` | Customer | Claim a waitlist seat offer |
 | GET | `/api/dashboard/organizer` | Organizer/Admin | Organizer analytics |
 | GET | `/api/dashboard/admin` | Admin | Admin system analytics |
-
----
-
-## 💡 System Design Highlights
-
-1. **Service Layer Architecture**: Business logic is strictly separated into `services/` (e.g., `booking.service.js`, `seat.service.js`), keeping controllers thin and logic highly testable.
-
-2. **Atomic Seat Reservations**: The seat hold and book operations use MongoDB `findOneAndUpdate` with a `status: 'available'` or `status: 'held'` + `heldBy: userId` filter, guaranteeing race-condition safety without needing Redis or distributed locks.
-
-3. **Optimistic Real-time UI**: The seat map immediately reflects the user's own selections, while simultaneously listening to Socket.io events (`seat:held`, `seat:booked`, `seat:released`) to keep all viewers in sync — no polling required.
-
-4. **JWT Refresh Token Flow**: The frontend Axios interceptor automatically detects `401` responses and silently attempts a token refresh before retrying the original request, keeping users logged in across browser sessions.
-
-5. **Email-Client-Safe Emails**: All email templates use a table-based layout with full inline CSS, ensuring consistent rendering across Gmail (web + mobile app), Outlook, and other clients. QR codes are attached as inline `cid:` attachments rather than `data:` URI strings, which Gmail strips.
-
-6. **Configurable Timers**: The seat hold duration and waitlist offer expiry are fully configurable via `.env` variables (`SEAT_HOLD_TTL_MINUTES`, `WAITLIST_OFFER_TTL_MINUTES`), requiring no code changes for deployment.
-
----
-
-## 📄 License
-
-This project was developed as part of a B.Tech academic project.
-
----
-
-*TicketMaster – A complete, scalable full-stack ticket booking ecosystem.*
