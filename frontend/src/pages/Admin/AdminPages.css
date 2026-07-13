@@ -4,8 +4,7 @@
 .admin-form-card h2 { font-size: 1.3rem; margin-bottom: var(--space-xl); }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); }
 @media (max-width: 640px) { .form-row { grid-template-columns: 1fr; } }
-.categories-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); }
-@media (max-width: 640px) { .categories-grid { grid-template-columns: 1fr; } }
+.categories-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--space-md); }
 .category-input { padding: var(--space-md); border-radius: var(--radius-md); }
 .category-input.cat-premium { background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.2); }
 .category-input.cat-standard { background: rgba(108,99,255,0.08); border: 1px solid rgba(108,99,255,0.2); }

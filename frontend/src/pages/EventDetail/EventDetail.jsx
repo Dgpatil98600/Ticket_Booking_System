@@ -326,7 +326,7 @@ const EventDetail = () => {
                     {holding ? (
                       <><span className="spinner spinner-sm" /> Holding Seats...</>
                     ) : (
-                      `Hold ${selectedSeats.length} Seat(s) – ₹${selectedTotal}`
+                      `Proceed to Book ${selectedSeats.length} Seat(s) – ₹${selectedTotal}`
                     )}
                   </button>
                 )}

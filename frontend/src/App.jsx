@@ -21,24 +21,6 @@ import CreateEvent from './pages/Organizer/CreateEvent';
 import WaitlistClaim from './pages/Waitlist/WaitlistClaim';
 import WaitlistHistory from './pages/Waitlist/WaitlistHistory';
 
-const Footer = () => (
-  <footer style={{
-    borderTop: '1px solid var(--border-subtle)',
-    padding: '40px var(--space-lg)',
-    textAlign: 'center',
-    color: 'var(--text-muted)',
-    fontSize: '0.85rem',
-    marginTop: 'auto',
-  }}>
-    <div style={{ marginBottom: '8px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-      <span style={{ fontSize: '1.2rem', marginRight: '8px', display: 'flex' }}><LuTicket /></span>
-      <strong style={{ color: 'var(--text-secondary)' }}>TicketMaster</strong>
-    </div>
-    <p>© {new Date().getFullYear()} TicketMaster. All rights reserved.</p>
-    <p style={{ marginTop: '4px' }}>Built with MERN Stack · React · Express · MongoDB · Socket.io</p>
-  </footer>
-);
-
 import { Toaster } from 'react-hot-toast';
 
 function App() {
@@ -151,7 +133,6 @@ function App() {
                   <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
               </main>
-              <Footer />
             </div>
           </ToastProvider>
         </SocketProvider>
