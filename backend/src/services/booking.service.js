@@ -77,6 +77,8 @@ const createBooking = async (userId, eventId, seatIds, userEmail, userName) => {
     eventTime: event.time,
     venue: event.venue?.name || 'TBD',
     seats: seatSnapshot,
+    subtotal: totalAmount,
+    convenienceFee: convenienceFee,
     totalAmount: finalAmount,
     qrCode,
   }).then(() => {
